@@ -382,3 +382,16 @@
 .footer .copyright a:hover {
     color: var(--primary);
 }
+
+
+.centered-container {
+    min-height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+}
+
+.form-control {
+    width: 100%; /* Stretch input fields to 100% width */
+}

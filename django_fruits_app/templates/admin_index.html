@@ -29,6 +29,7 @@
                 </div>
             </div>
             <div class="tab-content">
+                <!-- Vegetable Products Tab -->
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     <div class="row g-4">
                         {% for product in products %}
@@ -45,12 +46,18 @@
                                             <span class="text-body text-decoration-line-through">$ {{ product.product_old_price }}</span>
                                         </div>
                                         <div class="d-flex border-top">
-                                            <small class="w-50 text-center border-end py-2">
-                                                <a class="text-body" href=""><i class="fa fa-eye text-primary me-2"></i>Edit</a>
-                                            </small>
-                                            <small class="w-50 text-center py-2">
-                                                <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Delete</a>
-                                            </small>
+                                            <!-- Edit Button -->
+                                            <a class="w-50 text-center py-2 nav-item nav-link" id="addProductLink{{ product.id }}" href="#addProductForm{{ product.id }}" onclick="showForm(event, {{ product.id }})">
+                                                <i class="fa fa-edit text-primary me-2"></i>Edit
+                                            </a>
+                                            
+                                            <!-- Delete Form -->
+                                            <form class="w-50 text-center py-2" action="{% url 'admin_delete_product' product.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-link text-body p-0">
+                                                    <i class="fa fa-trash text-primary me-2"></i>Delete
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -60,6 +67,7 @@
                         {% endfor %}
                     </div>
                 </div>
+                <!-- Fruits Products Tab -->
                 <div id="tab-2" class="tab-pane fade show p-0">
                     <div class="row g-4">
                         {% for product in products %}
@@ -76,12 +84,18 @@
                                             <span class="text-body text-decoration-line-through">$ {{ product.product_old_price }}</span>
                                         </div>
                                         <div class="d-flex border-top">
-                                            <small class="w-50 text-center border-end py-2">
-                                                <a class="text-body" href=""><i class="fa fa-eye text-primary me-2"></i>Edit</a>
-                                            </small>
-                                            <small class="w-50 text-center py-2">
-                                                <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Delete</a>
-                                            </small>
+                                            <!-- Edit Button -->
+                                            <a class="w-50 text-center py-2 nav-item nav-link" id="addProductLink{{ product.id }}" href="#addProductForm{{ product.id }}" onclick="showForm(event, {{ product.id }})">
+                                                <i class="fa fa-edit text-primary me-2"></i>Edit
+                                            </a>
+                                            
+                                            <!-- Delete Form -->
+                                            <form class="w-50 text-center py-2" action="{% url 'admin_delete_product' product.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-link text-body p-0">
+                                                    <i class="fa fa-trash text-primary me-2"></i>Delete
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -91,10 +105,11 @@
                         {% endfor %}
                     </div>
                 </div>
+                <!-- Fresh Products Tab -->
                 <div id="tab-3" class="tab-pane fade show p-0">
                     <div class="row g-4">
                         {% for product in products %}
-                            {% if product.product_category == "Fresh" %}
+                            {% if product.product_category == "fresh" %}
                                 <div class="col-xl-3 col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                                     <div class="product-item">
                                         <div class="position-relative bg-light overflow-hidden">
@@ -107,12 +122,18 @@
                                             <span class="text-body text-decoration-line-through">$ {{ product.product_old_price }}</span>
                                         </div>
                                         <div class="d-flex border-top">
-                                            <small class="w-50 text-center border-end py-2">
-                                                <a class="text-body" href=""><i class="fa fa-eye text-primary me-2"></i>Edit</a>
-                                            </small>
-                                            <small class="w-50 text-center py-2">
-                                                <a class="text-body" href=""><i class="fa fa-shopping-bag text-primary me-2"></i>Delete</a>
-                                            </small>
+                                            <!-- Edit Button -->
+                                            <a class="w-50 text-center py-2 nav-item nav-link" id="addProductLink{{ product.id }}" href="#addProductForm{{ product.id }}" onclick="showForm(event, {{ product.id }})">
+                                                <i class="fa fa-edit text-primary me-2"></i>Edit
+                                            </a>
+                                            
+                                            <!-- Delete Form -->
+                                            <form class="w-50 text-center py-2" action="{% url 'admin_delete_product' product.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-link text-body p-0">
+                                                    <i class="fa fa-trash text-primary me-2"></i>Delete
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -127,4 +148,54 @@
     </div>
     <!-- Product End -->
 
+    <!-- Update Product Forms -->
+    {% for product in products %}
+    <div class="container mt-5" id="addProductForm{{ product.id }}" class="edit-form" style="display: none;">
+        <form method="post" action="{% url 'admin_update_product' product.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="productImage{{ product.id }}" class="form-label">Product Image</label>
+                <input type="file" class="form-control" id="productImage{{ product.id }}" name="image">
+                {% if product.product_image %}
+                    <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}" style="max-width: 100px;"/>
+                {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="productName{{ product.id }}" class="form-label">Product Name</label>
+                <input type="text" class="form-control" id="productName{{ product.id }}" name="name" value="{{ product.product_name }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="offerPrice{{ product.id }}" class="form-label">Offer Price</label>
+                <input type="number" class="form-control" id="offerPrice{{ product.id }}" name="offer_price" value="{{ product.product_off_price }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="oldPrice{{ product.id }}" class="form-label">Old Price</label>
+                <input type="number" class="form-control" id="oldPrice{{ product.id }}" name="old_price" value="{{ product.product_old_price }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="category{{ product.id }}" class="form-label">Category</label>
+                <select class="form-select" id="category{{ product.id }}" name="category" required>
+                    <option value="">Select a category</option>
+                    <option value="vegetable" {% if product.product_category == 'vegetable' %}selected{% endif %}>Vegetable</option>
+                    <option value="fruits" {% if product.product_category == 'fruits' %}selected{% endif %}>Fruits</option>
+                    <option value="fresh" {% if product.product_category == 'fresh' %}selected{% endif %}>Fresh</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Product</button>
+        </form><br>
+    </div>
+    {% endfor %}
+
+    <script>
+        function showForm(event, productId) {
+            event.preventDefault();
+            var form = document.getElementById('addProductForm' + productId);
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'block';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+    </script>
+        
 {% endblock %}

@@ -57,9 +57,14 @@
                     <a href="{% url 'admin_logout_view' %}" class="nav-item nav-link">Logout</a>
                 </div>
                 <div class="d-none d-lg-flex ms-2">
-                    <a class="btn-sm-square bg-white rounded-circle ms-3" href="">
-                        <small class="fa fa-user text-body"></small>
-                    </a>
+                    <div class="dropdown ms-3">
+                        <a class="btn-sm-square bg-white rounded-circle text-body" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <small class="fa fa-user"></small>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'admin_profile' %}">My Profile</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -68,6 +73,7 @@
     <!-- Add Product Form -->
     <div class="container mt-5" id="addProductForm" style="display: none;">
         <form method="post" action="{% url 'admin_add_product' %}" enctype="multipart/form-data">
+        <br>
             {% csrf_token %}
             <div class="mb-3">
                 <label for="productImage" class="form-label">Product Image</label>
@@ -182,6 +188,7 @@
     <script src="{% static 'django_fruits_app/lib/easing/easing.min.js' %}"></script>
     <script src="{% static 'django_fruits_app/lib/waypoints/waypoints.min.js' %}"></script>
     <script src="{% static 'django_fruits_app/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 
     <!-- Template Javascript -->
     <script src="{% static 'django_fruits_app/js/main.js' %}"></script>

@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseNotAllowed
 from .models import User, Admin, Products
 
 # Create your views here.
@@ -120,6 +121,93 @@ def admin_add_product(request):
     
     return render(request, 'admin_index.html')
 
+
+
+@login_required
+def admin_delete_product(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Products, id=product_id)
+        product.delete()
+        return redirect("admin_index_view")
+    return render(request,"admin_index_view")
+
+
+
+@login_required
+def admin_update_product(request, product_id):
+    product = get_object_or_404(Products, id=product_id)
+    if request.method == 'POST':
+        product_image = request.FILES.get('image')
+        product_name = request.POST.get('name')
+        product_off_price = request.POST.get('offer_price')
+        product_old_price = request.POST.get('old_price')
+        product_category = request.POST.get('category')
+        
+        if product_name and product_category:
+            if product_image:
+                product.product_image = product_image
+                product.product_name = product_name
+                product.product_off_price = product_off_price
+                product.product_old_price = product_old_price
+                product.product_category = product_category
+                product.save()
+
+            return redirect('admin_index_view')
+    
+    return render(request, 'admin_index.html')
+
+
+# Admin Profile Section
+
+def admin_profile(request):
+    admin = get_object_or_404(Admin, id=request.user.id)
+    return render(request, "admin_profile.html", {'admin' : admin})
+
+
+@login_required
+def admin_edit_profile(request, admin_id):
+    admin = get_object_or_404(Admin, id=admin_id)
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        
+        if username and email:
+            admin.username = username
+            admin.email = email
+            admin.save()
+    
+    return render(request, "admin_edit_profile.html", {'admin': admin})
+
+
+@login_required
+def admin_delete_profile(request, admin_id):
+    if request.method == 'POST':
+        admin = get_object_or_404(Admin, id=admin_id)
+        admin.delete()
+
+        return redirect('admin_register_view')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+        
+@login_required
+def admin_chpwd_profile(request, admin_id):
+    admin = get_object_or_404(Admin, id=admin_id)
+    if request.method == 'POST':
+        Current_Password = request.POST.get('Current_Password')
+        New_Password = request.POST.get('New_Password')
+        Re_New_Password = request.POST.get('Re_New_Password')
+        if admin.check_password(Current_Password):
+            if New_Password == Re_New_Password:
+                admin.set_password(New_Password)
+                admin.save()
+            else:
+                print("Passwords Not Matching")
+        else:
+            print("Current password is wrong")
+
+    return render(request, 'admin_chpwd_profile.html', {'admin' : admin})
+        
 
 
 # Other Sections

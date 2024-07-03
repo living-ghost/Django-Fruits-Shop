@@ -382,3 +382,15 @@
 .footer .copyright a:hover {
     color: var(--primary);
 }
+
+.centered-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-control {
+    width: 100%;
+}
