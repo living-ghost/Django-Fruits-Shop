@@ -383,14 +383,15 @@
     color: var(--primary);
 }
 
+
 .centered-container {
-    min-height: 100vh;
+    min-height: 100vh; /* Full viewport height */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
 }
 
 .form-control {
-    width: 100%;
+    width: 100%; /* Stretch input fields to 100% width */
 }

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-h2za%$jkzkneuv+c$qqsq8b%v5h(c2!)kid1@$i$tbs)c-7isg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['9cd1-2409-40f3-15-fb92-501c-eb19-47a8-f57e.ngrok-free.app']
 
 
 # Application definition
@@ -45,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -128,10 +128,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'django_fruits_app', 'static')
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
