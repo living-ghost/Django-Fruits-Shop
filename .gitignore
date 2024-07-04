@@ -3,3 +3,5 @@ migrations
 media
 staticfiles
 *.sqlite3
+media
+

@@ -1,0 +1,81 @@
+{% extends "user_base_others.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="centered-container">
+        <div class="form-container">
+            <h2>Change Password</h2>
+            {% if user.id %}
+                <form action="{% url 'user_chpwd_profile' user.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="Current Password">Current Password</label>
+                        <input type="Password" class="form-control" id="current_Password" placeholder="Enter Current Password" name="Current_Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="New Password">New Password</label>
+                        <input type="Password" class="form-control" id="New_Password" placeholder="Enter New Password" name="New_Password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="New Password">Re-Enter New Password</label>
+                        <input type="Password" class="form-control" id="Re_New_Password" placeholder="Re-Enter New Password" name="Re_New_Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <style>
+        .centered-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-control, .btn {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #3CB815;
+            border: none;
+        }
+
+        .btn-danger {
+            background-color: #F65005;
+            border: none;
+        }
+
+        .btn + .btn {
+            margin-top: 10px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
+
+{% endblock %}

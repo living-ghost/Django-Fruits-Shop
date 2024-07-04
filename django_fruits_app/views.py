@@ -210,10 +210,62 @@ def admin_chpwd_profile(request, admin_id):
         
 
 
+# User Profile Section
+
+def user_profile_view(request):
+    return render(request, "user_profile.html")
+
+
+@login_required
+def user_edit_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        
+        if username and email:
+            user.username = username
+            user.email = email
+            user.save()
+    
+    return render(request, "user_edit_profile.html", {'user': user})
+
+
+@login_required
+def user_delete_profile(request, user_id):
+    if request.method == 'POST':
+        user = get_object_or_404(User, id=user_id)
+        user.delete()
+
+        return redirect('user_register_view')
+    else:
+        return HttpResponseNotAllowed(['POST'])
+        
+@login_required
+def user_chpwd_profile(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == 'POST':
+        Current_Password = request.POST.get('Current_Password')
+        New_Password = request.POST.get('New_Password')
+        Re_New_Password = request.POST.get('Re_New_Password')
+        if user.check_password(Current_Password):
+            if New_Password == Re_New_Password:
+                user.set_password(New_Password)
+                user.save()
+            else:
+                print("Passwords Not Matching")
+        else:
+            print("Current password is wrong")
+
+    return render(request, 'user_chpwd_profile.html', {'user' : user})
+
+
 # Other Sections
 
 def user_product_view(request):
-    return render(request, "user_product.html")
+    products = Products.objects.all()
+    return render(request, "user_product.html", {'products' : products})
 
 
 def user_about_view(request):
