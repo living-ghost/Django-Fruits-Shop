@@ -395,3 +395,8 @@
 .form-control {
     width: 100%; /* Stretch input fields to 100% width */
 }
+
+/* grand total on cart page aligning to right */
+.text-right {
+    text-align: right;
+}

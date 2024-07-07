@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseNotAllowed
-from .models import User, Admin, Products
+from .models import User, Admin, Products, Cart, CartItem
 
 
 # User Section
@@ -338,3 +338,48 @@ def error_view(request):
     Renders the error view.
     """
     return render(request, "404.html")
+
+
+# Adding to Cart & Checkout Section
+
+def user_cart_view(request):
+    user = request.user
+    cart, created = Cart.objects.get_or_create(user=user)
+    grand_total = cart.grand_total
+    return render(request, "user_cart.html", {'cart' : cart, 'grand_total' : grand_total})
+
+
+def user_add_cart_item_view(request, product_id):
+    user = request.user
+    product = get_object_or_404(Products, id=product_id)
+    cart, created = Cart.objects.get_or_create(user=user)
+    cart_item, created = CartItem.objects.get_or_create(cart=cart, product=product)
+    
+    if not created:
+        cart_item.quantity += 1
+        cart_item.save()
+
+    return redirect('user_cart_view')
+
+
+def user_update_cart_item_view(request, item_id):
+    if request.method == 'POST':
+        item = CartItem.objects.get(id=item_id)
+        action = request.POST.get('action')
+        if action == 'increase':
+            item.quantity += 1
+        elif action == 'decrease' and item.quantity > 1:
+            item.quantity -= 1
+        item.save()
+    return redirect('user_cart_view')
+
+
+def user_remove_cart_item_view(request, item_id):
+    if request.method == 'POST':
+        item = CartItem.objects.get(id=item_id)
+        item.delete()
+    return redirect('user_cart_view')
+
+
+def user_checkout_view(request):
+    return render(request, "user_checkout.html")

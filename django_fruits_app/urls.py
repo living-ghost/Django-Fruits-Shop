@@ -6,7 +6,7 @@ urlpatterns = [
 
     # User Section
 
-    path('user/login/', views.user_login_view, name='user_login_view'),
+    path('', views.user_login_view, name='user_login_view'),
     path('user/register/', views.user_register_view, name='user_register_view'),
     path('user/logout/', views.user_logout_view, name='user_logout_view'),
 
@@ -27,13 +27,21 @@ urlpatterns = [
     path('user/profile/delete/<int:user_id>/', views.user_delete_profile, name='user_delete_profile'),
     path('user/profile/change/password/<int:user_id>', views.user_chpwd_profile, name='user_chpwd_profile'),
 
+    # User Checkout Section
+
+    path('product/cart/', views.user_cart_view, name='user_cart_view'),
+    path('product/cart/add/<int:product_id>/', views.user_add_cart_item_view, name='user_add_cart_item_view'),
+    path('product/cart/update/<int:item_id>/', views.user_update_cart_item_view, name='user_update_cart_item_view'),
+    path('product/cart/remove/<int:item_id>/', views.user_remove_cart_item_view, name='user_remove_cart_item_view'),
+    path('cart/checkout/', views.user_checkout_view, name='user_checkout_view'),
+
     # Error Page Section
 
     path('error/', views.error_view, name='error_view'),
 
     # Admin Section
 
-    path('', views.admin_login_view, name='admin_login_view'),
+    path('administrator/login/', views.admin_login_view, name='admin_login_view'),
     path('administrator/register/', views.admin_register_view, name='admin_register_view'),
     path('administrator/logut/', views.admin_logout_view, name='admin_logout_view'),
     path('administrator/index/', views.admin_index_view, name='admin_index_view'),
